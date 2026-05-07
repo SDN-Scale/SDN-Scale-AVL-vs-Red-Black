@@ -31,7 +31,7 @@ public class AVL_Router_Tree {
 
     private int getBalance(AVLNode node) {
         if (node == null) return 0;
-        return height(node.left) + height(node.right);
+        return height(node.left) - height(node.right);
     }
 
     private void updateHeight(AVLNode node) {
