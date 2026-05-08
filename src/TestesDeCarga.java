@@ -5,34 +5,49 @@ import java.util.Collections;
 
 public class TestesDeCarga {
 
-    private static final int VOLUME_DADOS = 100000; 
+    private static final int VOLUME_DADOS = 10000; 
     private static final long SEED_FIXA = 42L;
 
     public static void main(String[] args) {
-        System.out.println("--- Iniciando Teste Isolado: RED-BLACK (" + VOLUME_DADOS + " regras) ---");
+        System.out.println("=== Iniciando Bateria de Testes (" + VOLUME_DADOS + " regras) ===");
         
-        Random gerador = new Random(SEED_FIXA);
-        RedBlack_Router_Tree rbt = new RedBlack_Router_Tree(); 
-        List<Integer> idsInseridos = new ArrayList<>();
+        System.out.println("\n[1] Estrutura: AVL Tree");
+        Random geradorAvl = new Random(SEED_FIXA);
+        AVL_Router_Tree avl = new AVL_Router_Tree(); 
+        List<Integer> idsAvl = new ArrayList<>();
 
-        long inicioInsercao = System.nanoTime();
+        long inicioInsercaoAvl = System.nanoTime();
         for (int i = 1; i <= VOLUME_DADOS; i++) {
-            int prioridadeGerada = gerador.nextInt(100);
-            PacketRule regra = new PacketRule(i, "192.168.0.1", "10.0.0.1", prioridadeGerada);
-            rbt.insert(regra); 
-            idsInseridos.add(i);
+            avl.insert(new PacketRule(i, "192.168.0.1", "10.0.0.1", geradorAvl.nextInt(100))); 
+            idsAvl.add(i);
         }
-        long tempoTotalInsercaoNs = (System.nanoTime() - inicioInsercao);
-        System.out.println("Tempo de Inserção (Red-Black): " + tempoTotalInsercaoNs + " ns");
+        System.out.println("Tempo de Inserção (AVL): " + (System.nanoTime() - inicioInsercaoAvl) + " ns");
 
-        int quantidadeParaDeletar = (int) (VOLUME_DADOS * 0.20);
-        Collections.shuffle(idsInseridos, gerador);
-        
-        long inicioDelecao = System.nanoTime();
-        for (int i = 0; i < quantidadeParaDeletar; i++) {
-            rbt.delete(idsInseridos.get(i)); 
+        Collections.shuffle(idsAvl, new Random(SEED_FIXA));
+        long inicioDelecaoAvl = System.nanoTime();
+        for (int i = 0; i < (VOLUME_DADOS * 0.20); i++) {
+            avl.delete(idsAvl.get(i)); 
         }
-        long tempoTotalDelecaoNs = (System.nanoTime() - inicioDelecao);
-        System.out.println("Tempo de Deleção (Red-Black - 20%): " + tempoTotalDelecaoNs + " ns");
+        System.out.println("Tempo de Deleção (AVL - 20%): " + (System.nanoTime() - inicioDelecaoAvl) + " ns");
+
+        System.out.println("\n[2] Estrutura: Red-Black Tree");
+        
+        Random geradorRbt = new Random(SEED_FIXA); 
+        RedBlack_Router_Tree rbt = new RedBlack_Router_Tree(); 
+        List<Integer> idsRbt = new ArrayList<>();
+
+        long inicioInsercaoRbt = System.nanoTime();
+        for (int i = 1; i <= VOLUME_DADOS; i++) {
+            rbt.insert(new PacketRule(i, "192.168.0.1", "10.0.0.1", geradorRbt.nextInt(100))); 
+            idsRbt.add(i);
+        }
+        System.out.println("Tempo de Inserção (RBT): " + (System.nanoTime() - inicioInsercaoRbt) + " ns");
+
+        Collections.shuffle(idsRbt, new Random(SEED_FIXA));
+        long inicioDelecaoRbt = System.nanoTime();
+        for (int i = 0; i < (VOLUME_DADOS * 0.20); i++) {
+            rbt.delete(idsRbt.get(i)); 
+        }
+        System.out.println("Tempo de Deleção (RBT - 20%): " + (System.nanoTime() - inicioDelecaoRbt) + " ns");
     }
 }
