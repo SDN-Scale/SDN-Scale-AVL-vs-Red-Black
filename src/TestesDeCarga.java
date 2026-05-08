@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public class TestesDeCarga {
 
-    private static final int VOLUME_DADOS = 10000; 
+    private static final int VOLUME_DADOS = 100000; 
     private static final long SEED_FIXA = 42L;
 
     public static void main(String[] args) {
