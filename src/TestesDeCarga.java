@@ -11,6 +11,7 @@ public class TestesDeCarga {
     public static void main(String[] args) {
         System.out.println("=== Iniciando Bateria de Testes (" + VOLUME_DADOS + " regras) ===");
         
+        // --- 1. TESTE DA AVL ---
         System.out.println("\n[1] Estrutura: AVL Tree");
         Random geradorAvl = new Random(SEED_FIXA);
         AVL_Router_Tree avl = new AVL_Router_Tree(); 
@@ -30,8 +31,9 @@ public class TestesDeCarga {
         }
         System.out.println("Tempo de Deleção (AVL - 20%): " + (System.nanoTime() - inicioDelecaoAvl) + " ns");
 
+
+        // --- 2. TESTE DA RED-BLACK ---
         System.out.println("\n[2] Estrutura: Red-Black Tree");
-        
         Random geradorRbt = new Random(SEED_FIXA); 
         RedBlack_Router_Tree rbt = new RedBlack_Router_Tree(); 
         List<Integer> idsRbt = new ArrayList<>();
